@@ -6,11 +6,21 @@ int buttonVal = 0;
 int buttonState = 0;
 int oldButtonState = 0;
 
+double temperature = 0.0;
+
 void setup()
 {
-  pinMode(led, OUTPUT);
-  pinMode(beep, OUTPUT);
-  pinMode(button, INPUT);
+    Spark.variable("temperature", &temperature, DOUBLE);
+
+    // Output pins
+    pinMode(led, OUTPUT);
+    pinMode(beep, OUTPUT);
+
+    // Input pins
+    pinMode(button, INPUT);
+    pinMode(A7, INPUT);
+    
+    Serial.begin(9600);
 }
 
 // This routine loops forever
@@ -35,4 +45,11 @@ void loop()
         digitalWrite(led, LOW);
         analogWrite(beep, 0);
     }
+    
+    int reading = 0;
+    double kelvin = 0.0;
+    reading = analogRead(A7);
+    kelvin = reading*(3.3/4096)*100;
+    temperature = kelvin - 273;
+    Serial.println("Temperature " + String(temperature));
 }
