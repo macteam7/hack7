@@ -4,7 +4,7 @@
     <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=machack7storage;AccountKey=Yi0+S+DnxNHs4Dmv9BlKiKwRWmR4jTzjcd+LSgL3TAhCGn9B9pxT6V2ywyxCFumOdYQ6o7z5uGzpG7Xr8zsXBw==" />
-      <Setting name="StorageConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="StorageConnectionString" value="DefaultEndpointsProtocol=https;AccountName=machack7storage;AccountKey=Yi0+S+DnxNHs4Dmv9BlKiKwRWmR4jTzjcd+LSgL3TAhCGn9B9pxT6V2ywyxCFumOdYQ6o7z5uGzpG7Xr8zsXBw==" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

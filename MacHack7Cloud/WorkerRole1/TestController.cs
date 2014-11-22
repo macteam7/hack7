@@ -3,8 +3,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using Microsoft.Practices.Unity;
-using WorkerRole1.Infrastructure.IOC;
 using WorkerRole1.Infrastructure.Repository;
 using WorkerRole1.Models;
 
@@ -18,7 +16,7 @@ namespace WorkerRole1
 
         public TestController()
         {
-            repository = Bootstrapper.Container.Resolve(typeof(IRepository<DeviceEntity>), "Repository", new ParameterOverride("tableName", "devices")) as IRepository<DeviceEntity>;
+            repository = new Repository<DeviceEntity>("DeviceEntity");
             repository.Insert(new DeviceEntity());
         }
 

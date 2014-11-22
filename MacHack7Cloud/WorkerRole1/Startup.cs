@@ -1,6 +1,5 @@
 ﻿using Owin;
 using System.Web.Http;
-using WorkerRole1.Infrastructure.IOC;
 
 namespace WorkerRole1
 {
@@ -12,10 +11,7 @@ namespace WorkerRole1
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-
-            //Configure Unity IOC
-            config.DependencyResolver = new UnityResolver(Bootstrapper.Initialise());
-
+            
             //Enabling Cross-Origin Requests
             config.EnableCors();
 
