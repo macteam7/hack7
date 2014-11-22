@@ -1,16 +1,86 @@
-int led = D0;
-int beep = A0;
-int button = D2;
+// This #include statement was automatically added by the Spark IDE.
+#include "TinyGPS/TinyGPS.h"
 
+//LED
+int led = D0;
+
+//Beep
+int beep = A0;
+
+//Push Button
+int button = D2;
 int buttonVal = 0;
 int buttonState = 0;
 int oldButtonState = 0;
 
+//Temperature
+int temp = A7;
 double temperature = 0.0;
+
+//GPS
+TinyGPS gps;
+char szInfo[64];
+String gpsLocation = "45.4263103,-75.71736659999999"; //dummgy gps data for testing REST API endpoint
+
+//helper function to beep and blink
+void beepandblink (int numberOfBlinks)
+{
+    for(int i=0; i<numberOfBlinks; i++) {
+        digitalWrite(led, HIGH);
+        analogWrite(beep, 200);
+        delay(1000);
+        digitalWrite(led, LOW);
+        analogWrite(beep, 0);
+        delay(1000);
+    }
+}
+
+//helper function to beep and blink
+void shortbeepandblink (int numberOfBlinks)
+{
+    for(int i=0; i<numberOfBlinks; i++) {
+        digitalWrite(led, HIGH);
+        analogWrite(beep, 200);
+        delay(500);
+        digitalWrite(led, LOW);
+        analogWrite(beep, 0);
+        delay(500);
+    }
+}
+
+//helper function to reset Button
+void resetButton() {
+   buttonState = 0;
+};
+
+int informationProcessed(String p) {
+   resetButton();
+   Serial.println("information processed");
+   return 1;
+};
+
+int requestAccepted(String p) {
+   beepandblink(2);
+   Serial.println("request accepted");
+   return 1;
+};
+
+int alert(String p) {
+   shortbeepandblink(5);
+   Serial.println("alert");
+   return 1;
+};
 
 void setup()
 {
+    //define the REST API end points
     Spark.variable("temperature", &temperature, DOUBLE);
+    Spark.variable("gpsLocation", &gpsLocation, STRING);
+    Spark.variable("buttonState", &buttonState, INT);
+
+    Spark.function("informationProcessed", informationProcessed);
+	Spark.function("requestAccepted", requestAccepted);
+	Spark.function("alert", alert);
 
     // Output pins
     pinMode(led, OUTPUT);
@@ -18,14 +88,18 @@ void setup()
 
     // Input pins
     pinMode(button, INPUT);
-    pinMode(A7, INPUT);
-    
+    pinMode(temp, INPUT);
+
+    //For Spark.println debug statement
     Serial.begin(9600);
+	//For GPS
+	Serial1.begin(9600);
 }
 
 // This routine loops forever
 void loop()
 {
+    //Push Button
     oldButtonState = buttonState;
     buttonVal = digitalRead(button);
     if(buttonVal == LOW)
@@ -36,20 +110,53 @@ void loop()
     {
         buttonState = 0;
     }
-    
+
     if (buttonState != oldButtonState && buttonState == 1)
     {
-        digitalWrite(led, HIGH);
-        analogWrite(beep, 200);
-        delay(1000);
-        digitalWrite(led, LOW);
-        analogWrite(beep, 0);
+        beepandblink(1);
     }
-    
+
+    //Temperature
     int reading = 0;
     double kelvin = 0.0;
-    reading = analogRead(A7);
+    reading = analogRead(temp);
     kelvin = reading*(3.3/4096)*100;
     temperature = kelvin - 273;
-    Serial.println("Temperature " + String(temperature));
+
+    //GPS
+    bool isValidGPS = false;
+    for (unsigned long start = millis(); millis() - start < 1000;){
+        // Check GPS data is available
+        while (Serial1.available()){
+            char c = Serial1.read();
+
+            // parse GPS data
+            if (gps.encode(c))
+                isValidGPS = true;
+        }
+    }
+
+    // If we have a valid GPS location then publish it
+    if (isValidGPS){
+        float lat, lon;
+        unsigned long age;
+
+        gps.f_get_position(&lat, &lon, &age);
+
+        sprintf(szInfo, "%.6f,%.6f", (lat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : lat), (lon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : lon));
+        Serial.println("Valid GPS");
+    }
+    else{
+        // Not a valid GPS location, just pass 0.0,0.0
+        // This is not correct because 0.0,0.0 is a valid GPS location, we have to pass a invalid GPS location
+        // and check it at the client side
+        sprintf(szInfo, "0.0,0.0");
+        Serial.println("Invalid GPS");
+    }
+
+    //Spark.publish("gpsloc", szInfo);
+
+    //Debug statments
+    Serial.println("Temperature: " + String(temperature));
+    Serial.println("GPS: " + String(szInfo));
 }
