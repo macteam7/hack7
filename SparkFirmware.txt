@@ -20,7 +20,7 @@ double temperature = 0.0;
 //GPS
 TinyGPS gps;
 char szInfo[64];
-String gpsLocation = "45.4263103,-75.71736659999999"; //dummgy gps data for testing REST API endpoint
+char gpsLocation[64] = "45.4263103,-75.71736659999999"; //dummgy gps data for testing REST API endpoint
 
 //helper function to beep and blink
 void beepandblink (int numberOfBlinks)
@@ -53,13 +53,13 @@ void resetButton() {
    buttonState = 0;
 };
 
-int informationProcessed(String p) {
+int processed(String p) {
    resetButton();
    Serial.println("information processed");
    return 1;
 };
 
-int requestAccepted(String p) {
+int accepted(String p) {
    beepandblink(2);
    Serial.println("request accepted");
    return 1;
@@ -74,12 +74,12 @@ int alert(String p) {
 void setup()
 {
     //define the REST API end points
-    Spark.variable("temperature", &temperature, DOUBLE);
-    Spark.variable("gpsLocation", &gpsLocation, STRING);
-    Spark.variable("buttonState", &buttonState, INT);
+    Spark.variable("temp", &temperature, DOUBLE);
+    Spark.variable("gps", &gpsLocation, STRING);
+    Spark.variable("bstate", &buttonState, INT);
 
-    Spark.function("informationProcessed", informationProcessed);
-	Spark.function("requestAccepted", requestAccepted);
+    Spark.function("processed", processed);
+	Spark.function("accepted", accepted);
 	Spark.function("alert", alert);
 
     // Output pins
@@ -105,10 +105,6 @@ void loop()
     if(buttonVal == LOW)
     {
         buttonState = 1;
-    }
-    else
-    {
-        buttonState = 0;
     }
 
     if (buttonState != oldButtonState && buttonState == 1)
