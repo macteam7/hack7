@@ -6,6 +6,12 @@ namespace WorkerRole1.Models
     {
         public Guid DeviceId { get; set; }
 
+        public PatientDevicesEntity()
+        {
+            PartitionKey = Guid.NewGuid().ToString();
+            GenerateKeys();
+        }
+
         public PatientDevicesEntity(Guid patientId)
         {
             PartitionKey = patientId.ToString();
