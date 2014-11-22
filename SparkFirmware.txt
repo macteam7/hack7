@@ -1,0 +1,38 @@
+int led = D0;
+int beep = A0;
+int button = D2;
+
+int buttonVal = 0;
+int buttonState = 0;
+int oldButtonState = 0;
+
+void setup()
+{
+  pinMode(led, OUTPUT);
+  pinMode(beep, OUTPUT);
+  pinMode(button, INPUT);
+}
+
+// This routine loops forever
+void loop()
+{
+    oldButtonState = buttonState;
+    buttonVal = digitalRead(button);
+    if(buttonVal == LOW)
+    {
+        buttonState = 1;
+    }
+    else
+    {
+        buttonState = 0;
+    }
+    
+    if (buttonState != oldButtonState && buttonState == 1)
+    {
+        digitalWrite(led, HIGH);
+        analogWrite(beep, 200);
+        delay(1000);
+        digitalWrite(led, LOW);
+        analogWrite(beep, 0);
+    }
+}
