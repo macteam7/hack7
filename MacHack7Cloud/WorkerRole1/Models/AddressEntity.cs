@@ -4,9 +4,12 @@ namespace WorkerRole1.Models
 {
     public class AddressEntity : BaseEntity
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public string WifiSSID { get; set; }
+        public string WiFiPWD { get; set; }
 
         public AddressEntity()
         {
@@ -15,8 +18,8 @@ namespace WorkerRole1.Models
 
         public override sealed void GenerateKeys()
         {
-            PartitionKey = Latitude.ToString() + Longitude;
-            RowKey = Guid.NewGuid().ToString();
+            PartitionKey = "Address";
+            RowKey = Id.ToString();
         }
     }
 }
