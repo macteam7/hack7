@@ -17,8 +17,8 @@ namespace WorkerRole1.Models
 
         public override sealed void GenerateKeys()
         {
-            PartitionKey = Id.ToString();
-            RowKey = Guid.NewGuid().ToString();
+            PartitionKey = "Patient";
+            RowKey = Id.ToString();
         }
     }
 }
