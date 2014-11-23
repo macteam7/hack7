@@ -31,7 +31,7 @@ namespace WorkerRole1
         }
 
         [Route("add")]
-        [HttpPost]
+        [HttpPut]
         public bool AddLocation([FromBody] AddressEntity location)
         {
             location.Id = Guid.NewGuid();
@@ -49,6 +49,7 @@ namespace WorkerRole1
             }
             var oldEntity = repository.GetEntity("Address", locationToUpdate.Id.ToString());
             if (oldEntity != null) repository.Delete(oldEntity);
+            locationToUpdate.GenerateKeys();
             repository.Insert(locationToUpdate);
             return true;
         }
