@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,7 +30,17 @@ namespace EmergencyBraceletHost.Model
             {
                 var json = JsonConvert.SerializeObject(data);
                 var url = _apiUrl + path;
-                await client.PostAsync(url, new StringContent(json));
+                await client.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
+            }
+        }
+
+        public async Task Put<T>(string path, T data) where T : class
+        {
+            using (var client = new HttpClient())
+            {
+                var json = JsonConvert.SerializeObject(data);
+                var url = _apiUrl + path;
+                await client.PutAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
             }
         }
     }

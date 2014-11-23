@@ -28,7 +28,7 @@ namespace EmergencyBraceletHost.Model
             using (var client = new HttpClient())
             {
                 var url = string.Format(_deviceUrl, deviceID, path, accessToken);
-                await client.PostAsync(url, new StringContent(null));
+                await client.PostAsync(url, new StringContent(string.Empty));
             }
         }
     }
