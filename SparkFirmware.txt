@@ -284,7 +284,8 @@ GPS_UBLOX_Class GPS;
 //------------------------- end GPS LIB SOURCE 
 
 //LED
-int led = D0;
+int red = D0;
+int green = D1;
 
 //Beep
 int beep = A0;
@@ -303,7 +304,7 @@ double temperature = 0.0;
 char gpsLocation[64];
 
 //helper function to beep and blink
-void beepandblink (int numberOfBlinks)
+void beepandblink (int led, int numberOfBlinks)
 {
     for(int i=0; i<numberOfBlinks; i++) {
         digitalWrite(led, HIGH);
@@ -316,7 +317,7 @@ void beepandblink (int numberOfBlinks)
 }
 
 //helper function to beep and blink
-void shortbeepandblink (int numberOfBlinks)
+void shortbeepandblink (int led, int numberOfBlinks)
 {
     for(int i=0; i<numberOfBlinks; i++) {
         digitalWrite(led, HIGH);
@@ -340,13 +341,13 @@ int processed(String p) {
 };
 
 int accepted(String p) {
-   beepandblink(2);
+   beepandblink(green, 2);
    Serial.println("request accepted");
    return 1;
 };
 
 int alert(String p) {
-   shortbeepandblink(5);
+   shortbeepandblink(red, 5);
    Serial.println("alert");
    return 1;
 };
@@ -363,7 +364,8 @@ void setup()
 	Spark.function("alert", alert);
 
     // Output pins
-    pinMode(led, OUTPUT);
+    pinMode(red, OUTPUT);
+    pinMode(green, OUTPUT);
     pinMode(beep, OUTPUT);
 
     // Input pins
@@ -421,7 +423,7 @@ void loop()
 
     if (buttonState != oldButtonState && buttonState == 1)
     {
-        beepandblink(1);
+        beepandblink(red, 1);
     }
 
     //Temperature
