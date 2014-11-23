@@ -37,7 +37,7 @@ namespace WorkerRole1
         {
             return new PatientModel(repository.GetEntity("Patient", id));
         }
-
+        
         [Route("add")]
         [HttpPut]
         public Guid AddPatient([FromBody] PatientEntity patient)

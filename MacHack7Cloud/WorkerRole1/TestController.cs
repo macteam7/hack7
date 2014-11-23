@@ -17,7 +17,12 @@ namespace WorkerRole1
         public TestController()
         {
             repository = new Repository<DeviceEntity>("DeviceEntity");
-            repository.Insert(new DeviceEntity());
+
+            var device = new DeviceEntity();
+            device.Id = "5342dfdff6afd623667535129451467";
+            device.Name = "DeviceTest";
+
+            repository.Insert(device);
         }
 
         [Route("")]
