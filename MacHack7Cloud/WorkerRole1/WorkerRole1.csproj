@@ -118,6 +118,7 @@
     <Compile Include="Models\IBaseEntity.cs" />
     <Compile Include="Models\PatientDevicesEntity.cs" />
     <Compile Include="Models\PatientEntity.cs" />
+    <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\Status.cs" />
     <Compile Include="PatientController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

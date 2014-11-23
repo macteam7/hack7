@@ -21,23 +21,53 @@ namespace WorkerRole1
         }
 
         [Route("")]
-        public IEnumerable<PatientEntity> Get()
+        public IEnumerable<PatientModel> Get()
         {
-            return repository.GetAll();
+            return repository.GetAll().Select(patient => new PatientModel(patient));
+        }
+
+        [Route("name/{name}")]
+        public IEnumerable<PatientModel> GetByName(string name)
+        {
+            return repository.GetAll().Where(patient => patient.Name.StartsWith(name)).Select(patient => new PatientModel(patient));
+        }
+
+        [Route("id/{id}")]
+        public PatientModel GetById(string id)
+        {
+            return new PatientModel(repository.GetEntity("Patient", id));
         }
 
         [Route("add")]
-        [HttpPost]
-        public void AddPatient([FromBody] PatientEntity patient)
+        [HttpPut]
+        public Guid AddPatient([FromBody] PatientEntity patient)
         {
+            patient.Id = Guid.NewGuid();
+            patient.GenerateKeys();
             repository.Insert(patient);
+            return patient.Id;
         }
 
-        [Route("remove")]
+        [Route("update")]
         [HttpPost]
-        public void RemovePatient(string idPatient)
+        public bool UpdatePatient([FromBody] PatientEntity newPatient)
         {
-            repository.DeleteByKey("Patient",idPatient);
+            if (newPatient != null)
+            {
+                var oldPatient = repository.GetEntity("Patient", newPatient.Id.ToString());
+                if (oldPatient != null) repository.Delete(oldPatient);
+                newPatient.GenerateKeys();
+                repository.Insert(newPatient);
+                return true;
+            }
+            return false;
+        }
+
+        [Route("remove/{idPatient}")]
+        [HttpPost]
+        public void RemovePatient(Guid idPatient)
+        {
+            repository.DeleteByKey("Patient",idPatient.ToString());
         }
 
         [Route("removeAll")]
