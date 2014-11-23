@@ -8,7 +8,7 @@ namespace EmergencyBraceletHost.Model
 {
     public class Patient
     {
-        public string PatientID { get; set; }
+        public string Id { get; set; }
         public double LowTemp { get; set; }
         public double HighTemp { get; set; }
     }

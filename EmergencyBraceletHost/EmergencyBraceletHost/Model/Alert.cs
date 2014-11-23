@@ -8,9 +8,12 @@ namespace EmergencyBraceletHost.Model
 {
     public class Alert
     {
-        public string DeviceID { get; set; }
-        public string PatientID { get; set; }
-        public string Location { get; set; }
-        public string Status { get; set; }
+        public string RowKey { get; set; }
+        public string DeviceId { get; set; }
+        public string HospitalId { get; set; }
+        public string PatientId { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public int Status { get; set; }
     }
 }

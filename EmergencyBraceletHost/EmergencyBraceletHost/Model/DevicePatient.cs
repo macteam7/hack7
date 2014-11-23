@@ -8,7 +8,7 @@ namespace EmergencyBraceletHost.Model
 {
     public class DevicePatient
     {
-        public string DeviceID { get; set; }
-        public string PatientID { get; set; }
+        public string DeviceId { get; set; }
+        public string PatientId { get; set; }
     }
 }
