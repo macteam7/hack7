@@ -9,6 +9,8 @@ namespace WorkerRole1.Models
         public int Age { get; set; }
         public int Gender { get; set; }
         public string History { get; set; }
+        public double LowTemp { get; set; }
+        public double HighTemp { get; set; }
 
         public PatientEntity()
         {

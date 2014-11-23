@@ -5,16 +5,34 @@ namespace WorkerRole1.Models
     public class AlertsEntity : BaseEntity
     {
         public Guid HospitalId { get; set; }
-        public Status Status { get; set; }
+        public Guid PatientId { get; set; }
+        public int Status { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public string DeviceId { get; set; }
 
-        public AlertsEntity(Guid deviceId)
+        private string _deviceId;
+
+        public AlertsEntity()
         {
-            PartitionKey = deviceId.ToString();
+            GenerateKeys();
+        }
+
+        public void SetKey(string key)
+        {
+            _deviceId = key;
+            GenerateKeys();
+        }
+
+        public AlertsEntity(string deviceId)
+        {
+            _deviceId = deviceId;
             GenerateKeys();
         }
 
         public override sealed void GenerateKeys()
         {
+            PartitionKey = "Alert";
             RowKey = Guid.NewGuid().ToString();
         }
     }

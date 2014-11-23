@@ -36,6 +36,16 @@ namespace WorkerRole1.Models
             get { return _patientEntity.History; }
         }
 
+        public string LowTemp
+        {
+            get { return _patientEntity.LowTemp.ToString(); }
+        }
+
+        public string HighTemp
+        {
+            get { return _patientEntity.HighTemp.ToString(); }
+        }
+
         public string PartitionKey
         {
             get { return _patientEntity.PartitionKey; }

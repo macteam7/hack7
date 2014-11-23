@@ -7,16 +7,29 @@ namespace WorkerRole1.Models
         public DateTime Time { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public string DeviceId { get; set; }
 
-        public DevicePositions(Guid deviceId)
+        public void SetKey(string key)
         {
-            PartitionKey = deviceId.ToString();
+            DeviceId = key;
+            GenerateKeys();
+        }
+
+        public DevicePositions()
+        {
+            GenerateKeys();
+        }
+
+        public DevicePositions(string deviceId)
+        {
+            DeviceId = deviceId;
             GenerateKeys();
         }
 
         public override sealed void GenerateKeys()
         {
-            RowKey = Guid.NewGuid().ToString();
+            PartitionKey = "DevicePositions";
+            RowKey = DeviceId;
         }
     }
 }

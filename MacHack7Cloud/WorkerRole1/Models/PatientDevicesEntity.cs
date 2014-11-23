@@ -4,23 +4,24 @@ namespace WorkerRole1.Models
 {
     public class PatientDevicesEntity : BaseEntity
     {
-        public Guid DeviceId { get; set; }
+        public string DeviceId { get; set; }
+        private Guid _patientId;
 
         public PatientDevicesEntity()
         {
-            PartitionKey = Guid.NewGuid().ToString();
             GenerateKeys();
         }
 
         public PatientDevicesEntity(Guid patientId)
         {
-            PartitionKey = patientId.ToString();
+            _patientId = patientId;
             GenerateKeys();
         }
 
         public override sealed void GenerateKeys()
         {
-            RowKey = Guid.NewGuid().ToString();
+            PartitionKey = "PatientDevice";
+            RowKey = _patientId.ToString();
         }
     }
 }

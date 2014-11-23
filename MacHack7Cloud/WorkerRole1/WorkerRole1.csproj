@@ -104,14 +104,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlertController.cs" />
+    <Compile Include="DevicesController.cs" />
     <Compile Include="Infrastructure\CORS\PublicCorsPolicyAttribute.cs" />
     <Compile Include="Infrastructure\Repository\IRepository.cs" />
     <Compile Include="Infrastructure\Repository\Repository.cs" />
     <Compile Include="LocationController.cs" />
     <Compile Include="Models\AddressEntity.cs" />
+    <Compile Include="Models\AlertModel.cs" />
     <Compile Include="Models\AlertsEntity.cs" />
     <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\DeviceEntity.cs" />
+    <Compile Include="Models\DevicePositionExtraModel.cs" />
+    <Compile Include="Models\DevicePositionModel.cs" />
     <Compile Include="Models\DevicePositions.cs" />
     <Compile Include="Models\GenderType.cs" />
     <Compile Include="Models\HospitalEntity.cs" />
@@ -121,6 +126,7 @@
     <Compile Include="Models\PatientModel.cs" />
     <Compile Include="Models\Status.cs" />
     <Compile Include="PatientController.cs" />
+    <Compile Include="PatientDevicesController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TestController.cs" />
